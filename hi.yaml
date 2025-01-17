@@ -12,7 +12,7 @@ metadata:
   labels: # 이친구의 labels는 그렇게 중요하지 않아. pod의 라벨이 중요
     app: nginx
 spec:
-  replicas: 3 # pod가 세개개 만들어진다. 
+  replicas: 4 # pod가 세개개 만들어진다. 
   selector:
     matchLabels:
       app: nginx # 이러한 라벨을 가진 파드가 1개. 띄워져있지 않ㅇ면 다시만들어주겠다~
