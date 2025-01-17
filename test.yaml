@@ -1,0 +1,43 @@
+--- # 작업을 시작하겠다는 의미. 이거 생략 가능. 
+apiVersion: v1
+kind: Namespace # 네임스페이스를 만들겠다. 
+metadata:
+  name: express
+---
+apiVersion: apps/v1
+kind: Deployment # apps/v1으로 디플로이를 만들거야.
+metadata:
+  name: nginx
+  namespace: express
+  labels: # 이친구의 labels는 그렇게 중요하지 않아. pod의 라벨이 중요
+    app: nginx
+spec:
+  replicas: 3 # pod가 세개개 만들어진다. 
+  selector:
+    matchLabels:
+      app: nginx # 이러한 라벨을 가진 파드가 1개. 띄워져있지 않ㅇ면 다시만들어주겠다~
+  template: # 여기서부터는 pod를 말한다. 위와 동일. 
+    metadata:
+      labels:
+        app: nginx
+    spec: # pod 안에 들어가있는 컨테이너이ㅣ다.
+      containers:
+      - name: nginx
+        image: nginx # image
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service # 서비스의 type 
+metadata:
+  name: nginx-service
+  namespace: express # 네임스페이스는 express로.
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80 # 
+    targetPort: 80 # 파드의 포트. 근데 어던 파드? app: mariadb 라는 이름을 가지고 있는 애에게 넘기겠다는 소리 
+  type: LoadBalancer
+
